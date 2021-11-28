@@ -4,7 +4,7 @@ import "./styles/SideDrawer.css";
 function NewEvent() {
   return (
     <div>
-      <h1>H1</h1>
+      <h1>Neues Event erstellen</h1>
       <TextField
         id="Test"
         label="Password"

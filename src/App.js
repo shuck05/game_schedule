@@ -19,17 +19,17 @@ function App() {
 
   return (
     <div className="App">
-      <div class="Header">
+      <div className="Header">
         <Header></Header>
       </div>
-      <div class="Sidedrawer">
+      <div className="Sidedrawer">
         <SideDrawer toggleNewEntry={toggleNewEntry}></SideDrawer>
       </div>
-      <div class="Main">
+      <div className="Main">
         {newEntry && <MainSpace />}
         {!newEntry && <NewEvent></NewEvent>}
       </div>
-      <div class="Ads">
+      <div className="Ads">
         <h2> Hier könnte ihre Werbung stehen</h2>
         <Button variant="primary" onClick={dummy}>
           Dummy
