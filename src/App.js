@@ -14,7 +14,8 @@ function App() {
   }
 
   function dummy() {
-    console.log("Dummy");
+    alert("u pressed the Dummy Button");
+    // console.log(localStorage.getItem("myEvents").name);
   }
 
   return (

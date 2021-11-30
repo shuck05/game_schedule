@@ -8,10 +8,14 @@ function Sidedrawer(props) {
   return (
     <div className="SideDrawer">
       <div className="Sidedrawer-Button">
-        <Button onClick={toggleNewEntry}>Neues Event</Button>
+        <Button className="ButtonAsH2" onClick={toggleNewEntry}>
+          Neues Event
+        </Button>
       </div>
 
-      <h2 className="Side-h2">Opt2</h2>
+      <h2 className="Side-h2">Event 1</h2>
+      <h2 className="Side-h2">Event 2</h2>
+      <h2 className="Side-h2">Event 3</h2>
     </div>
   );
 }
