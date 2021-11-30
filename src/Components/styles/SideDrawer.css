@@ -17,3 +17,9 @@
   margin-left: 2vw;
   margin-right: 2vw;
 }
+
+.ButtonAsH2 {
+  color: #61dafb !important;
+  font-weight: bold !important;
+  font-size: large !important;
+}

@@ -1,0 +1,24 @@
+Loginpage
+
+MainPage:
+	Header:
+		Logout
+		Settings
+		
+	Sidedrawer:
+		Events?
+		Neues Event
+		
+	MainPage:
+		Matches
+		Tabelle 
+		oder unterteilen?
+		
+		
+		
+Event:
+	Name: String
+	ID: int
+	Team[]: Stirng[]
+	Ko?: bool
+
