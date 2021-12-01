@@ -7,8 +7,6 @@ function NewEvent() {
   const [teamArray, setTeamArray] = useState([
     "Ajax Dauerstramm",
     "Dynamo Trinken",
-    "Alminia Bielefeld",
-    "Herke BSC",
   ]);
   const [participantArray, setParticipantArray] = useState([
     "Timmi Hendrix",
@@ -95,23 +93,28 @@ function NewEvent() {
   }
 
   function handleNewEvent() {
-    const event = {
+    const newEvent = {
       name: eventName,
       teams: teamArray,
       participants: participantArray,
       trainer: trainerArray,
     };
-    /*
-    if (localStorage.getItem("myEvents") != null) {
-      localStorage.setItem("myEvents", [
-        ...localStorage.getItem("myEvents"),
-        event,
-      ]);
-    } else {
-      localStorage.setItem("myEvents", event);
+    if (newEvent.name === "") {
+      alert("Das Event braucht einen Namen!");
+      return;
     }
-    */
-    console.log(event);
+    if (localStorage.getItem("eventArr") != null) {
+      const eventArr = JSON.parse(localStorage.getItem("eventArr"));
+      for (let i = 0; i < eventArr.length; i++) {
+        if (eventArr[i].name === newEvent.name) {
+          alert("Dieses Event existiert schon!");
+          return;
+        }
+      }
+      localStorage.setItem("eventArr", JSON.stringify([...eventArr, newEvent]));
+    } else {
+      localStorage.setItem("eventArr", JSON.stringify([newEvent]));
+    }
   }
 
   return (

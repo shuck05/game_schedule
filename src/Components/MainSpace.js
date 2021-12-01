@@ -1,10 +1,22 @@
+import { useState } from "react";
 import "./styles/MainSpace.css";
 
-function MainSpace() {
+function MainSpace(props) {
   return (
-    <div className="MainSpace">
-      <h2 className="Side-h2">Event Details</h2>
-      <h2 className="Side-h2">More Event Details</h2>
+    <div>
+      {props.activeEvent === null ? (
+        <div className="NewEventOuter">
+          <div className="Flex-Row" style={{ paddingRight: "2vw" }}>
+            <h1 className="Flex-grow">Noch keine Events hier ...</h1>
+          </div>
+        </div>
+      ) : (
+        <div className="NewEventOuter">
+          <div className="Flex-Row" style={{ paddingRight: "2vw" }}>
+            <h1 className="Flex-grow">{props.activeEvent.name}</h1>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
