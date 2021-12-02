@@ -2,7 +2,7 @@ import { TextField, Button } from "@mui/material";
 import { useState } from "react";
 import "./styles/NewEvent.css";
 
-function NewEvent() {
+function NewEvent(props) {
   const [eventName, setEventName] = useState("");
   const [teamArray, setTeamArray] = useState([
     "Ajax Dauerstramm",
@@ -103,17 +103,24 @@ function NewEvent() {
       alert("Das Event braucht einen Namen!");
       return;
     }
-    if (localStorage.getItem("eventArr") != null) {
-      const eventArr = JSON.parse(localStorage.getItem("eventArr"));
-      for (let i = 0; i < eventArr.length; i++) {
-        if (eventArr[i].name === newEvent.name) {
+    if (props.eventArr != null) {
+      for (let i = 0; i < props.eventArr.length; i++) {
+        if (props.eventArr[i].name === newEvent.name) {
           alert("Dieses Event existiert schon!");
           return;
         }
       }
-      localStorage.setItem("eventArr", JSON.stringify([...eventArr, newEvent]));
+
+      localStorage.setItem(
+        "eventArr",
+        JSON.stringify([...props.eventArr, newEvent])
+      );
+      props.setEventArr([...props.eventArr, newEvent]);
+      props.setNewEntry();
     } else {
       localStorage.setItem("eventArr", JSON.stringify([newEvent]));
+      props.setEventArr([newEvent]);
+      props.setNewEntry();
     }
   }
 

@@ -1,24 +1,27 @@
 import { Button } from "@mui/material";
-import { useState } from "react";
 import "./styles/SideDrawer.css";
 
 function Sidedrawer(props) {
-  // eslint-disable-next-line
-  const [eventArr, setEventArr] = useState(
-    JSON.parse(localStorage.getItem("eventArr"))
-  );
-
   function toggleNewEntry() {
     props.toggleNewEntry();
   }
-  function logShit() {
-    console.log(eventArr);
-  }
 
   function setActiveEvent(name) {
-    for (let i = 0; i < eventArr.length; i++) {
-      if (eventArr[i].name === name) {
-        props.setActiveEvent(eventArr[i]);
+    for (let i = 0; i < props.eventArr.length; i++) {
+      if (props.eventArr[i].name === name) {
+        props.setActiveEvent(props.eventArr[i]);
+        return;
+      }
+    }
+  }
+
+  function deleteEvent(name) {
+    let arr = props.eventArr;
+    for (let i = 0; i < arr.length; i++) {
+      if (name === arr[i].name) {
+        arr.splice(i, 1);
+        localStorage.setItem("eventArr", JSON.stringify(arr));
+        props.setEventArr(arr);
         return;
       }
     }
@@ -32,10 +35,10 @@ function Sidedrawer(props) {
         </Button>
       </div>
       <ul className="u-List">
-        {eventArr === null ? (
+        {props.eventArr === null ? (
           <h6>Noch keine Events</h6>
         ) : (
-          eventArr.map((e) => (
+          props.eventArr.map((e) => (
             <li key={e.name}>
               <Button
                 className="ButtonAsH2"
@@ -43,13 +46,16 @@ function Sidedrawer(props) {
               >
                 {e.name}
               </Button>
+              <Button
+                className="ButtonAsH2"
+                onClick={() => deleteEvent(e.name)}
+              >
+                X
+              </Button>
             </li>
           ))
         )}
       </ul>
-      <Button className="ButtonAsH2" onClick={logShit}>
-        Log Shit
-      </Button>
     </div>
   );
 }

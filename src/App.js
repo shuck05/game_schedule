@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Header from "./Components/Header";
 import MainSpace from "./Components/MainSpace";
@@ -7,19 +7,20 @@ import NewEvent from "./Components/NewEvent";
 import SideDrawer from "./Components/SideDrawer";
 
 function App() {
+  useEffect(() => {});
+
   const [newEntry, setNewEntry] = useState(false);
-  // eslint-disable-next-line
   const [eventArr, setEventArr] = useState(
     JSON.parse(localStorage.getItem("eventArr"))
   );
-  const [activeEvent, setActiveEvent] = useState(null);
+  const [activeEvent, setActiveEvent] = useState(eventArr[0] || null);
 
   function toggleNewEntry() {
     setNewEntry(!newEntry);
   }
 
   function dummy() {
-    if (activeEvent != null) alert(activeEvent.name);
+    console.log(activeEvent);
   }
 
   function dummy2() {
@@ -35,16 +36,19 @@ function App() {
         <SideDrawer
           toggleNewEntry={toggleNewEntry}
           setActiveEvent={setActiveEvent}
+          setEventArr={setEventArr}
+          eventArr={eventArr}
         ></SideDrawer>
       </div>
       <div className="Main">
-        {!newEntry && (
-          <MainSpace
-            activeEvent={activeEvent}
-            setActiveEvent={setActiveEvent}
-          ></MainSpace>
+        {!newEntry && <MainSpace activeEvent={activeEvent}></MainSpace>}
+        {newEntry && (
+          <NewEvent
+            setNewEntry={setNewEntry}
+            setEventArr={setEventArr}
+            eventArr={eventArr}
+          ></NewEvent>
         )}
-        {newEntry && <NewEvent></NewEvent>}
       </div>
       <div className="Ads">
         <h2> Hier könnte ihre Werbung stehen</h2>
