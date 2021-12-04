@@ -15,10 +15,11 @@ MainPage:
 		oder unterteilen?
 		
 		
-		
-Event:
-	Name: String
-	ID: int
-	Team[]: Stirng[]
-	Ko?: bool
+
+User hat mehrere Events:
+	Event:
+		Name: String
+		ID: int
+		Team[]: Stirng[]
+		Ko?: bool
 

@@ -13,7 +13,7 @@ function App() {
   const [eventArr, setEventArr] = useState(
     JSON.parse(localStorage.getItem("eventArr"))
   );
-  const [activeEvent, setActiveEvent] = useState(eventArr[0] || null);
+  const [activeEvent, setActiveEvent] = useState(null);
 
   function toggleNewEntry() {
     setNewEntry(!newEntry);
@@ -41,7 +41,12 @@ function App() {
         ></SideDrawer>
       </div>
       <div className="Main">
-        {!newEntry && <MainSpace activeEvent={activeEvent}></MainSpace>}
+        {!newEntry && (
+          <MainSpace
+            activeEvent={activeEvent}
+            setActiveEvent={setActiveEvent}
+          ></MainSpace>
+        )}
         {newEntry && (
           <NewEvent
             setNewEntry={setNewEntry}

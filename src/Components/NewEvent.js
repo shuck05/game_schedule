@@ -5,8 +5,13 @@ import "./styles/NewEvent.css";
 function NewEvent(props) {
   const [eventName, setEventName] = useState("");
   const [teamArray, setTeamArray] = useState([
-    "Ajax Dauerstramm",
-    "Dynamo Trinken",
+    { name: "Ajax Dauerstramm", score: 0, numberGames: 0, difference: 0 },
+    {
+      name: "Dynamo Trinken",
+      score: 0,
+      numberGames: 0,
+      difference: 0,
+    },
   ]);
   const [participantArray, setParticipantArray] = useState([
     "Timmi Hendrix",
@@ -22,14 +27,19 @@ function NewEvent(props) {
   }
 
   function handleNewTeam() {
-    if (teamArray.includes(newTeamTF)) {
-      alert("Dieses Team existiert schon!");
-    } else {
-      if (newTeamTF === "") {
-        alert("Das Team muss einen Namen haben!");
-      } else {
-        setTeamArray([...teamArray, newTeamTF]);
+    for (let i = 0; i < teamArray.length; i++) {
+      if (teamArray[i].name === newTeamTF) {
+        alert("Dieses Team existiert schon");
+        return;
       }
+    }
+    if (newTeamTF === "") {
+      alert("Das Team muss einen Namen haben!");
+    } else {
+      setTeamArray([
+        ...teamArray,
+        { name: newTeamTF, score: 0, numberGames: 0, difference: 0 },
+      ]);
     }
   }
 
@@ -78,12 +88,12 @@ function NewEvent(props) {
   function handleDeleteTeam(team) {
     console.log("Dealeating" + team);
     for (var i = 0; i < teamArray.length; i++) {
-      if (teamArray[i] === team) {
+      if (teamArray[i].name === team) {
         teamArray.splice(i, 1);
       }
     }
-    console.log(teamArray);
   }
+
   function handleDeleteparticipant(participant) {
     for (var i = 0; i < participantArray.length; i++) {
       if (participantArray[i] === participant) {
@@ -92,10 +102,27 @@ function NewEvent(props) {
     }
   }
 
+  function getGames() {
+    if (teamArray.length < 3) {
+      return [[teamArray[0].name, teamArray[1].name]];
+    } else {
+      return [
+        [teamArray[0].name, teamArray[1].name],
+        [teamArray[1].name, teamArray[2].name],
+        [teamArray[2].name, teamArray[0].name],
+      ];
+    }
+  }
+
   function handleNewEvent() {
+    if (teamArray.length < 2) {
+      alert("Hast du keine Freunde?");
+      return;
+    }
     const newEvent = {
       name: eventName,
       teams: teamArray,
+      games: getGames(),
       participants: participantArray,
       trainer: trainerArray,
     };
@@ -228,19 +255,19 @@ function NewEvent(props) {
         <div className="Flex-Col">
           <h3>Teams</h3>
           <ul className="u-List">
-            {teamArray.map((teamname) => (
-              <li key={teamname}>
+            {teamArray.map((team) => (
+              <li key={team.name}>
                 <TextField
                   className="textfield Col-Content"
                   id="0"
-                  label={teamname}
+                  label={team.name}
                   variant="standard"
                 />
                 <Button
                   className="Col-Content"
                   variant="outlined"
                   onClick={() => {
-                    handleDeleteTeam(teamname);
+                    handleDeleteTeam(team.name);
                   }}
                 >
                   X
