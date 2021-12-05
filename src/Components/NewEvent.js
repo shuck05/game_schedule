@@ -41,6 +41,7 @@ function NewEvent(props) {
         { name: newTeamTF, score: 0, numberGames: 0, difference: 0 },
       ]);
     }
+    setNewTeamTF("");
   }
 
   function handleNewParticipant() {
@@ -86,7 +87,6 @@ function NewEvent(props) {
   }
 
   function handleDeleteTeam(team) {
-    console.log("Dealeating" + team);
     for (var i = 0; i < teamArray.length; i++) {
       if (teamArray[i].name === team) {
         teamArray.splice(i, 1);
@@ -107,9 +107,9 @@ function NewEvent(props) {
       return [[teamArray[0].name, teamArray[1].name]];
     } else {
       return [
-        [teamArray[0].name, teamArray[1].name],
-        [teamArray[1].name, teamArray[2].name],
-        [teamArray[2].name, teamArray[0].name],
+        [teamArray[0].name, teamArray[1].name, 0, 0],
+        [teamArray[1].name, teamArray[2].name, 0, 0],
+        [teamArray[2].name, teamArray[0].name, 0, 0],
       ];
     }
   }
@@ -180,6 +180,7 @@ function NewEvent(props) {
               id="0"
               label="Teamname"
               variant="standard"
+              value={newTeamTF}
               onChange={handleTeamnameTextfieldChange}
             />
             <Button

@@ -18,8 +18,14 @@ function Schedule(props) {
     setTextfield2(e.target.value);
   }
 
+  function comp(team1, team2) {
+    if (team1.score > team2.score) return -1;
+    if (team1.score === team2.score) return 0;
+    if (team1.score < team2.score) return 1;
+    return 0;
+  }
+
   function addResult(team1, team2) {
-    console.log("Team1:" + team1 + " Team2:" + team2);
     let indexT1 = null;
     let indexT2 = null;
 
@@ -27,29 +33,57 @@ function Schedule(props) {
       if (props.activeEvent.teams[i].name === team1) indexT1 = i;
       if (props.activeEvent.teams[i].name === team2) indexT2 = i;
     }
-    console.log(props.activeEvent.teams[indexT1].difference);
-    console.log(props.activeEvent.teams[indexT1]);
-    console.log(props.activeEvent.teams[indexT2]);
     if (indexT1 === null || indexT2 === null) return;
 
-    let temp = props.activeEvent;
-    if (textfield1 > textfield2) {
-      temp.teams[indexT1].score = temp.score + 3;
-      temp.teams[indexT1].difference =
-        temp.teams[indexT1].difference + textfield1 - textfield2;
-      temp.teams[indexT1].numberGames = temp.teams[indexT1].numberGames + 1;
-
-      temp.teams[indexT2].difference =
-        temp.teams[indexT2].difference + textfield2 - textfield1;
-      temp.teams[indexT2].numberGames = temp.teams[indexT2].numberGames + 1;
-      props.setActiveEvent(temp);
-      let arr = JSON.parse(localStorage.getItem("eventArr"));
-      localStorage.setItem("eventArr", JSON.stringify(temp));
-    } else if (textfield1 < textfield2) {
+    let arr = props.eventArr;
+    let eventIndex = null;
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].name === props.activeEvent.name) {
+        eventIndex = i;
+        continue;
+      }
     }
+    let t1 = arr[eventIndex].teams[indexT1];
+    let t2 = arr[eventIndex].teams[indexT2];
+    t1.difference =
+      parseInt(t1.difference) + parseInt(textfield1) - parseInt(textfield2);
+    t1.numberGames = t1.numberGames + 1;
+    t2.difference = t2.difference + parseInt(textfield2) - parseInt(textfield1);
+    t2.numberGames = t2.numberGames + 1;
+    if (parseInt(textfield1) > parseInt(textfield2)) {
+      console.log("Team 1 wins!");
+      t1.score = t1.score + 3;
+      arr[eventIndex].teams[indexT1] = t1;
+      arr[eventIndex].teams[indexT2] = t2;
+    } else if (parseInt(textfield1) < parseInt(textfield2)) {
+      console.log("Team 2 wins!");
+      t2.score = t2.score + 3;
+      arr[eventIndex].teams[indexT1] = t1;
+      arr[eventIndex].teams[indexT2] = t2;
+    } else if (parseInt(textfield1) === parseInt(textfield2)) {
+      console.log("Draw!");
+      t1.score = t1.score + 1;
+      t2.score = t2.score + 1;
+      arr[eventIndex].teams[indexT1] = t1;
+      arr[eventIndex].teams[indexT2] = t2;
+    }
+    for (let i = 0; i < arr[eventIndex].games.length; i++) {
+      if (
+        team1 === arr[eventIndex].games[i][0] &&
+        team2 === arr[eventIndex].games[i][1]
+      ) {
+        console.log("Found it");
+        arr[eventIndex].games[i][2] = textfield1;
+        arr[eventIndex].games[i][3] = textfield2;
+      }
+    }
+    arr[eventIndex].teams.sort(comp);
+    props.setEventArr(arr);
+    localStorage.setItem("eventArr", JSON.stringify(arr));
     setTextfield1(0);
     setTextfield2(0);
     setActiveEdit("");
+    props.rend();
   }
   return (
     <div>
@@ -71,12 +105,12 @@ function Schedule(props) {
             {!(activeEdit === e[0] + e[1]) && (
               <div>
                 <TextField
-                  disabled
                   size="small"
+                  value={e[2]}
                   style={{ width: "35%", paddingRight: "2%" }}
                 ></TextField>
                 <TextField
-                  disabled
+                  value={e[3]}
                   size="small"
                   style={{ width: "35%", paddingRight: "2%" }}
                 ></TextField>

@@ -2,8 +2,14 @@
 import "./styles/MainSpace.css";
 import Scoreboard from "./Scoreboard";
 import Schedule from "./Schedule";
+import { useState } from "react";
 
 function MainSpace(props) {
+  const [renderMain, setRenderMain] = useState(true);
+
+  function rend() {
+    setRenderMain(!renderMain);
+  }
   return (
     <div>
       {props.activeEvent === null ? (
@@ -18,14 +24,13 @@ function MainSpace(props) {
             <h1 className="Flex-grow" style={{ paddingBottom: "2vw" }}>
               {props.activeEvent.name}{" "}
             </h1>
-            <Scoreboard
-              activeEvent={props.activeEvent}
-              setActiveEvent={props.setActiveEvent}
-            ></Scoreboard>
+            <Scoreboard activeEvent={props.activeEvent}></Scoreboard>
             <div style={{ paddingBottom: "4vw" }}></div>
             <Schedule
               activeEvent={props.activeEvent}
-              setActiveEvent={props.setActiveEvent}
+              setEventArr={props.setEventArr}
+              eventArr={props.eventArr}
+              rend={rend}
             ></Schedule>
           </div>
         </div>
