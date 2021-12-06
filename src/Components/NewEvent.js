@@ -2,13 +2,16 @@ import { TextField, Button } from "@mui/material";
 import { useState } from "react";
 import "./styles/NewEvent.css";
 
-function NewEvent() {
+function NewEvent(props) {
   const [eventName, setEventName] = useState("");
   const [teamArray, setTeamArray] = useState([
-    "Ajax Dauerstramm",
-    "Dynamo Trinken",
-    "Alminia Bielefeld",
-    "Herke BSC",
+    { name: "Ajax Dauerstramm", score: 0, numberGames: 0, difference: 0 },
+    {
+      name: "Dynamo Trinken",
+      score: 0,
+      numberGames: 0,
+      difference: 0,
+    },
   ]);
   const [participantArray, setParticipantArray] = useState([
     "Timmi Hendrix",
@@ -24,15 +27,21 @@ function NewEvent() {
   }
 
   function handleNewTeam() {
-    if (teamArray.includes(newTeamTF)) {
-      alert("Dieses Team existiert schon!");
-    } else {
-      if (newTeamTF === "") {
-        alert("Das Team muss einen Namen haben!");
-      } else {
-        setTeamArray([...teamArray, newTeamTF]);
+    for (let i = 0; i < teamArray.length; i++) {
+      if (teamArray[i].name === newTeamTF) {
+        alert("Dieses Team existiert schon");
+        return;
       }
     }
+    if (newTeamTF === "") {
+      alert("Das Team muss einen Namen haben!");
+    } else {
+      setTeamArray([
+        ...teamArray,
+        { name: newTeamTF, score: 0, numberGames: 0, difference: 0 },
+      ]);
+    }
+    setNewTeamTF("");
   }
 
   function handleNewParticipant() {
@@ -78,14 +87,13 @@ function NewEvent() {
   }
 
   function handleDeleteTeam(team) {
-    console.log("Dealeating" + team);
     for (var i = 0; i < teamArray.length; i++) {
-      if (teamArray[i] === team) {
+      if (teamArray[i].name === team) {
         teamArray.splice(i, 1);
       }
     }
-    console.log(teamArray);
   }
+
   function handleDeleteparticipant(participant) {
     for (var i = 0; i < participantArray.length; i++) {
       if (participantArray[i] === participant) {
@@ -94,24 +102,80 @@ function NewEvent() {
     }
   }
 
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  function getGames() {
+    if (teamArray.length === 2) {
+      return [[teamArray[0].name, teamArray[1].name]];
+    } else if (teamArray.length === 3) {
+      return [
+        [teamArray[0].name, teamArray[1].name, 0, 0],
+        [teamArray[1].name, teamArray[2].name, 0, 0],
+        [teamArray[2].name, teamArray[0].name, 0, 0],
+      ];
+    } else {
+      let arr = [];
+      let count = 0;
+      let entry = [];
+      let entryRev = [];
+      let jump = false;
+
+      while (arr.length < (teamArray.length * (teamArray.length - 1)) / 2) {
+        count++;
+        jump = false;
+        let i = getRandomInt(teamArray.length);
+        let j = getRandomInt(teamArray.length);
+        if (i === j) continue;
+        entry = teamArray[i].name + teamArray[j].name;
+        entryRev = teamArray[j].name + teamArray[i].name;
+        for (let k = 0; k < arr.length; k++) {
+          if (arr[k][0] + arr[k][1] === entry) jump = true;
+          if (arr[k][0] + arr[k][1] === entryRev) jump = true;
+        }
+        if (!jump) arr.push([teamArray[i].name, teamArray[j].name, 0, 0]);
+        if (count > 10000) break;
+      }
+      return arr;
+    }
+  }
+
   function handleNewEvent() {
-    const event = {
+    if (teamArray.length < 2) {
+      alert("Hast du keine Freunde?");
+      return;
+    }
+    const newEvent = {
       name: eventName,
       teams: teamArray,
+      games: getGames(),
       participants: participantArray,
       trainer: trainerArray,
     };
-    /*
-    if (localStorage.getItem("myEvents") != null) {
-      localStorage.setItem("myEvents", [
-        ...localStorage.getItem("myEvents"),
-        event,
-      ]);
-    } else {
-      localStorage.setItem("myEvents", event);
+    if (newEvent.name === "") {
+      alert("Das Event braucht einen Namen!");
+      return;
     }
-    */
-    console.log(event);
+    if (props.eventArr != null) {
+      for (let i = 0; i < props.eventArr.length; i++) {
+        if (props.eventArr[i].name === newEvent.name) {
+          alert("Dieses Event existiert schon!");
+          return;
+        }
+      }
+
+      localStorage.setItem(
+        "eventArr",
+        JSON.stringify([...props.eventArr, newEvent])
+      );
+      props.setEventArr([...props.eventArr, newEvent]);
+      props.setNewEntry();
+    } else {
+      localStorage.setItem("eventArr", JSON.stringify([newEvent]));
+      props.setEventArr([newEvent]);
+      props.setNewEntry();
+    }
   }
 
   return (
@@ -143,6 +207,7 @@ function NewEvent() {
               id="0"
               label="Teamname"
               variant="standard"
+              value={newTeamTF}
               onChange={handleTeamnameTextfieldChange}
             />
             <Button
@@ -218,19 +283,19 @@ function NewEvent() {
         <div className="Flex-Col">
           <h3>Teams</h3>
           <ul className="u-List">
-            {teamArray.map((teamname) => (
-              <li key={teamname}>
+            {teamArray.map((team) => (
+              <li key={team.name}>
                 <TextField
                   className="textfield Col-Content"
                   id="0"
-                  label={teamname}
+                  label={team.name}
                   variant="standard"
                 />
                 <Button
                   className="Col-Content"
                   variant="outlined"
                   onClick={() => {
-                    handleDeleteTeam(teamname);
+                    handleDeleteTeam(team.name);
                   }}
                 >
                   X

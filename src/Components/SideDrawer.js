@@ -5,6 +5,28 @@ function Sidedrawer(props) {
   function toggleNewEntry() {
     props.toggleNewEntry();
   }
+
+  function setActiveEvent(name) {
+    for (let i = 0; i < props.eventArr.length; i++) {
+      if (props.eventArr[i].name === name) {
+        props.setActiveEvent(props.eventArr[i]);
+        return;
+      }
+    }
+  }
+
+  function deleteEvent(name) {
+    let arr = props.eventArr;
+    for (let i = 0; i < arr.length; i++) {
+      if (name === arr[i].name) {
+        arr.splice(i, 1);
+        localStorage.setItem("eventArr", JSON.stringify(arr));
+        props.setEventArr(arr);
+        return;
+      }
+    }
+  }
+
   return (
     <div className="SideDrawer">
       <div className="Sidedrawer-Button">
@@ -12,10 +34,28 @@ function Sidedrawer(props) {
           Neues Event
         </Button>
       </div>
-
-      <h2 className="Side-h2">Event 1</h2>
-      <h2 className="Side-h2">Event 2</h2>
-      <h2 className="Side-h2">Event 3</h2>
+      <ul className="u-List">
+        {props.eventArr === null ? (
+          <h6>Noch keine Events</h6>
+        ) : (
+          props.eventArr.map((e) => (
+            <li key={e.name}>
+              <Button
+                className="ButtonAsH2"
+                onClick={() => setActiveEvent(e.name)}
+              >
+                {e.name}
+              </Button>
+              <Button
+                className="ButtonAsH2"
+                onClick={() => deleteEvent(e.name)}
+              >
+                X
+              </Button>
+            </li>
+          ))
+        )}
+      </ul>
     </div>
   );
 }
