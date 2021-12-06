@@ -102,15 +102,36 @@ function NewEvent(props) {
     }
   }
 
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
   function getGames() {
-    if (teamArray.length < 3) {
+    if (teamArray.length === 2) {
       return [[teamArray[0].name, teamArray[1].name]];
-    } else {
+    } else if (teamArray.length === 3) {
       return [
         [teamArray[0].name, teamArray[1].name, 0, 0],
         [teamArray[1].name, teamArray[2].name, 0, 0],
         [teamArray[2].name, teamArray[0].name, 0, 0],
       ];
+    } else {
+      let arr = [];
+      let count = 0;
+      let entry = [];
+      while (arr.length < (teamArray.length * (teamArray.length - 1)) / 2) {
+        count++;
+        let i = getRandomInt(teamArray.length);
+        let j = getRandomInt(teamArray.length);
+        if (i === j) continue;
+        entry = [teamArray[i].name, teamArray[j].name, 0, 0];
+        if (arr.includes(entry)) continue;
+        entry = [teamArray[j].name, teamArray[i].name, 0, 0];
+        arr.push(entry);
+        if (count > 10000) break;
+      }
+      console.log(arr);
+      return arr;
     }
   }
 

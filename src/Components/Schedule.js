@@ -20,8 +20,11 @@ function Schedule(props) {
 
   function comp(team1, team2) {
     if (team1.score > team2.score) return -1;
-    if (team1.score === team2.score) return 0;
     if (team1.score < team2.score) return 1;
+    if (team1.score === team2.score) {
+      if (team1.difference > team2.difference) return -1;
+      if (team1.difference < team2.difference) return 1;
+    }
     return 0;
   }
 
