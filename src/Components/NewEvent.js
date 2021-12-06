@@ -119,18 +119,24 @@ function NewEvent(props) {
       let arr = [];
       let count = 0;
       let entry = [];
+      let entryRev = [];
+      let jump = false;
+
       while (arr.length < (teamArray.length * (teamArray.length - 1)) / 2) {
         count++;
+        jump = false;
         let i = getRandomInt(teamArray.length);
         let j = getRandomInt(teamArray.length);
         if (i === j) continue;
-        entry = [teamArray[i].name, teamArray[j].name, 0, 0];
-        if (arr.includes(entry)) continue;
-        entry = [teamArray[j].name, teamArray[i].name, 0, 0];
-        arr.push(entry);
+        entry = teamArray[i].name + teamArray[j].name;
+        entryRev = teamArray[j].name + teamArray[i].name;
+        for (let k = 0; k < arr.length; k++) {
+          if (arr[k][0] + arr[k][1] === entry) jump = true;
+          if (arr[k][0] + arr[k][1] === entryRev) jump = true;
+        }
+        if (!jump) arr.push([teamArray[i].name, teamArray[j].name, 0, 0]);
         if (count > 10000) break;
       }
-      console.log(arr);
       return arr;
     }
   }

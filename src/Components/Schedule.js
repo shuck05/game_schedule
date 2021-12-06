@@ -54,17 +54,14 @@ function Schedule(props) {
     t2.difference = t2.difference + parseInt(textfield2) - parseInt(textfield1);
     t2.numberGames = t2.numberGames + 1;
     if (parseInt(textfield1) > parseInt(textfield2)) {
-      console.log("Team 1 wins!");
       t1.score = t1.score + 3;
       arr[eventIndex].teams[indexT1] = t1;
       arr[eventIndex].teams[indexT2] = t2;
     } else if (parseInt(textfield1) < parseInt(textfield2)) {
-      console.log("Team 2 wins!");
       t2.score = t2.score + 3;
       arr[eventIndex].teams[indexT1] = t1;
       arr[eventIndex].teams[indexT2] = t2;
     } else if (parseInt(textfield1) === parseInt(textfield2)) {
-      console.log("Draw!");
       t1.score = t1.score + 1;
       t2.score = t2.score + 1;
       arr[eventIndex].teams[indexT1] = t1;
