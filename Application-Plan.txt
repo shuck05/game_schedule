@@ -23,3 +23,7 @@ User hat mehrere Events:
 		Team[]: Stirng[]
 		Ko?: bool
 
+
+Good Video:
+REST API with node
+https://www.youtube.com/watch?v=cr3pX6fSUpc
