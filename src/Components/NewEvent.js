@@ -108,12 +108,12 @@ function NewEvent(props) {
 
   function getGames() {
     if (teamArray.length === 2) {
-      return [[teamArray[0].name, teamArray[1].name]];
+      return [[teamArray[0].name, teamArray[1].name], null, null];
     } else if (teamArray.length === 3) {
       return [
-        [teamArray[0].name, teamArray[1].name, 0, 0],
-        [teamArray[1].name, teamArray[2].name, 0, 0],
-        [teamArray[2].name, teamArray[0].name, 0, 0],
+        [teamArray[0].name, teamArray[1].name, null, null],
+        [teamArray[1].name, teamArray[2].name, null, null],
+        [teamArray[2].name, teamArray[0].name, null, null],
       ];
     } else {
       let arr = [];
@@ -134,8 +134,29 @@ function NewEvent(props) {
           if (arr[k][0] + arr[k][1] === entry) jump = true;
           if (arr[k][0] + arr[k][1] === entryRev) jump = true;
         }
+
+        if (arr[arr.length - 1] !== undefined) {
+          if (
+            teamArray[i].name === arr[arr.length - 1][0] ||
+            teamArray[i].name === arr[arr.length - 1][1]
+          ) {
+            jump = true;
+            console.log("Nicht 2 Spiele nacheinander...");
+          }
+
+          if (
+            teamArray[j].name === arr[arr.length - 1][0] ||
+            teamArray[j].name === arr[arr.length - 1][1]
+          ) {
+            jump = true;
+          }
+        }
+
         if (!jump) arr.push([teamArray[i].name, teamArray[j].name, 0, 0]);
-        if (count > 10000) break;
+        if (count > 100000) {
+          console.log("Not finished");
+          break;
+        }
       }
       return arr;
     }
