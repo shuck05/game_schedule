@@ -68,8 +68,8 @@ function Schedule(props) {
 
     for (let i = 0; i < arr[eventIndex].games.length; i++) {
       if (
-        arr[eventIndex].games[i][2] !== null &&
-        arr[eventIndex].games[i][3] !== null
+        arr[eventIndex].games[i][2] !== undefined &&
+        arr[eventIndex].games[i][3] !== undefined
       ) {
         // Games
         if (

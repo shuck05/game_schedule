@@ -108,31 +108,33 @@ function NewEvent(props) {
 
   function getGames() {
     if (teamArray.length === 2) {
-      return [[teamArray[0].name, teamArray[1].name], null, null];
+      return [[teamArray[0].name, teamArray[1].name], undefined, undefined];
     } else if (teamArray.length === 3) {
       return [
-        [teamArray[0].name, teamArray[1].name, null, null],
-        [teamArray[1].name, teamArray[2].name, null, null],
-        [teamArray[2].name, teamArray[0].name, null, null],
+        [teamArray[0].name, teamArray[1].name, undefined, undefined],
+        [teamArray[1].name, teamArray[2].name, undefined, undefined],
+        [teamArray[2].name, teamArray[0].name, undefined, undefined],
       ];
     } else {
       let arr = [];
       let count = 0;
       let entry = [];
       let entryRev = [];
-      let jump = false;
+      let matchDoesExist = false;
+      let playedMatchBefore = false;
 
       while (arr.length < (teamArray.length * (teamArray.length - 1)) / 2) {
         count++;
-        jump = false;
+        matchDoesExist = false;
+        playedMatchBefore = false;
         let i = getRandomInt(teamArray.length);
         let j = getRandomInt(teamArray.length);
         if (i === j) continue;
         entry = teamArray[i].name + teamArray[j].name;
         entryRev = teamArray[j].name + teamArray[i].name;
         for (let k = 0; k < arr.length; k++) {
-          if (arr[k][0] + arr[k][1] === entry) jump = true;
-          if (arr[k][0] + arr[k][1] === entryRev) jump = true;
+          if (arr[k][0] + arr[k][1] === entry) matchDoesExist = true;
+          if (arr[k][0] + arr[k][1] === entryRev) matchDoesExist = true;
         }
 
         if (arr[arr.length - 1] !== undefined) {
@@ -140,24 +142,40 @@ function NewEvent(props) {
             teamArray[i].name === arr[arr.length - 1][0] ||
             teamArray[i].name === arr[arr.length - 1][1]
           ) {
-            jump = true;
-            console.log("Nicht 2 Spiele nacheinander...");
+            playedMatchBefore = true;
           }
 
           if (
             teamArray[j].name === arr[arr.length - 1][0] ||
             teamArray[j].name === arr[arr.length - 1][1]
           ) {
-            jump = true;
+            playedMatchBefore = true;
           }
         }
-
-        if (!jump) arr.push([teamArray[i].name, teamArray[j].name, 0, 0]);
+        if (playedMatchBefore) console.log("Played before...");
+        if (!matchDoesExist && !playedMatchBefore) {
+          console.log("Added Normally");
+          arr.push([
+            teamArray[i].name,
+            teamArray[j].name,
+            undefined,
+            undefined,
+          ]);
+        } else if (!matchDoesExist && playedMatchBefore && count > 10000) {
+          console.log("Sadly someone has a double game...");
+          arr.push([
+            teamArray[i].name,
+            teamArray[j].name,
+            undefined,
+            undefined,
+          ]);
+        }
         if (count > 100000) {
-          console.log("Not finished");
+          alert("There are games missing");
           break;
         }
       }
+      console.log(count);
       return arr;
     }
   }
