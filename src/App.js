@@ -5,6 +5,7 @@ import Header from "./Components/Header";
 import MainSpace from "./Components/MainSpace";
 import NewEvent from "./Components/NewEvent";
 import SideDrawer from "./Components/SideDrawer";
+import APIshit from "./api/api-shit";
 
 const dummyData = [
   {
@@ -124,12 +125,14 @@ function App() {
       </div>
       <div className="Ads">
         <h2> Hier könnte ihre Werbung stehen</h2>
+
         <Button variant="primary" onClick={dummy}>
           Dummy
         </Button>
         <Button variant="primary" onClick={dummy2}>
           Clear Storage
         </Button>
+        <APIshit />
       </div>
     </div>
   );
