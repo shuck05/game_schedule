@@ -8,6 +8,8 @@ router.get("/all", usersRoutes.usersAll);
 
 router.post("/create", usersRoutes.usersCreate);
 
+router.post("/login", usersRoutes.login);
+
 // router.put("/delete", booksRoutes.booksDelete);
 
 // router.put("/reset", booksRoutes.booksReset);

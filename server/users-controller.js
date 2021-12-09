@@ -29,3 +29,31 @@ exports.usersCreate = async (req, res) => {
       });
     });
 };
+
+exports.login = async (req, res) => {
+  knex
+    .select("*")
+    .from("users")
+    .then((userData) => {
+      let username = req.body.username;
+      let password = req.body.password;
+      let id = null;
+      for (let i = 0; i < userData.length; i++) {
+        if (
+          username == userData[i].username &&
+          password == userData[i].password
+        ) {
+          id = userData[i].id;
+          break;
+        }
+      }
+      if (id === null) {
+        res.json("Username or Password incorrect.");
+      } else {
+        res.json(id);
+      }
+    })
+    .catch((err) => {
+      res.json({ message: `There was an error while logging in: ${err}` });
+    });
+};

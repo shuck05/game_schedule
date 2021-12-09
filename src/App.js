@@ -5,7 +5,7 @@ import Header from "./Components/Header";
 import MainSpace from "./Components/MainSpace";
 import NewEvent from "./Components/NewEvent";
 import SideDrawer from "./Components/SideDrawer";
-import APIshit from "./api/api-shit";
+import LoginPage from "./Components/LoginPage";
 
 const dummyData = [
   {
@@ -72,7 +72,7 @@ const dummyData = [
 
 function App() {
   useEffect(() => {});
-
+  const [userID, setUserID] = useState(null);
   const [newEntry, setNewEntry] = useState(false);
   const [eventArr, setEventArr] = useState(
     JSON.parse(localStorage.getItem("eventArr"))
@@ -91,49 +91,54 @@ function App() {
   function dummy2() {
     setEventArr([]);
     localStorage.clear();
-    window.location.reload(false);
+    // window.location.reload(false);
   }
 
   return (
-    <div className="App">
-      <div className="Header">
-        <Header></Header>
-      </div>
-      <div className="Sidedrawer">
-        <SideDrawer
-          toggleNewEntry={toggleNewEntry}
-          setActiveEvent={setActiveEvent}
-          setEventArr={setEventArr}
-          eventArr={eventArr}
-        ></SideDrawer>
-      </div>
-      <div className="Main">
-        {!newEntry && (
-          <MainSpace
-            activeEvent={activeEvent}
-            setEventArr={setEventArr}
-            eventArr={eventArr}
-          ></MainSpace>
-        )}
-        {newEntry && (
-          <NewEvent
-            setNewEntry={setNewEntry}
-            setEventArr={setEventArr}
-            eventArr={eventArr}
-          ></NewEvent>
-        )}
-      </div>
-      <div className="Ads">
-        <h2> Hier könnte ihre Werbung stehen</h2>
+    <div>
+      {userID === null && <LoginPage setUserID={setUserID}></LoginPage>}
+      {userID !== null && (
+        <div className="App">
+          <div className="Header">
+            <Header setUserID={setUserID}></Header>
+          </div>
+          <div className="Sidedrawer">
+            <SideDrawer
+              toggleNewEntry={toggleNewEntry}
+              setActiveEvent={setActiveEvent}
+              activeEvent={activeEvent}
+              setEventArr={setEventArr}
+              eventArr={eventArr}
+            ></SideDrawer>
+          </div>
+          <div className="Main">
+            {!newEntry && (
+              <MainSpace
+                activeEvent={activeEvent}
+                setEventArr={setEventArr}
+                eventArr={eventArr}
+              ></MainSpace>
+            )}
+            {newEntry && (
+              <NewEvent
+                setNewEntry={setNewEntry}
+                setEventArr={setEventArr}
+                eventArr={eventArr}
+              ></NewEvent>
+            )}
+          </div>
+          <div className="Ads">
+            <h2> Hier könnte ihre Werbung stehen</h2>
 
-        <Button variant="primary" onClick={dummy}>
-          Dummy
-        </Button>
-        <Button variant="primary" onClick={dummy2}>
-          Clear Storage
-        </Button>
-        <APIshit />
-      </div>
+            <Button variant="primary" onClick={dummy}>
+              Dummy
+            </Button>
+            <Button variant="primary" onClick={dummy2}>
+              Clear Storage
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -7,6 +7,13 @@ function Sidedrawer(props) {
   }
 
   function setActiveEvent(name) {
+    if (props.activeEvent !== null) {
+      if (name === props.activeEvent.name) {
+        props.setActiveEvent(null);
+        return;
+      }
+    }
+
     for (let i = 0; i < props.eventArr.length; i++) {
       if (props.eventArr[i].name === name) {
         props.setActiveEvent(props.eventArr[i]);
@@ -22,6 +29,7 @@ function Sidedrawer(props) {
         arr.splice(i, 1);
         localStorage.setItem("eventArr", JSON.stringify(arr));
         props.setEventArr(arr);
+        props.setActiveEvent(null);
         return;
       }
     }

@@ -19,7 +19,7 @@ h3 {
 }
 
 .Flex-Col {
-  margin: 3vw;
+  margin: 2vw;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -42,7 +42,7 @@ h3 {
 }
 
 .Col-Content {
-  margin-top: 4vh !important;
+  margin-top: 2vh !important;
 }
 
 li::marker {

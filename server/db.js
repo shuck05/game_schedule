@@ -36,11 +36,13 @@ knex.schema
     console.error(`There was an error setting up the database: ${error}`);
   });
 
+/*
 knex
   .select("*")
   .from("users")
   .then((data) => console.log("data:", data))
   .catch((err) => console.log(err));
+*/
 
 // Export the database
 module.exports = knex;

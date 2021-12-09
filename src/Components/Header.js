@@ -1,10 +1,11 @@
 import { IconButton } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
 import "./styles/Header.css";
 
-function Header() {
+function Header(props) {
   function logout() {
-    alert("Loged out");
+    props.setUserID(null);
   }
 
   function settings() {
@@ -15,10 +16,10 @@ function Header() {
       <h2>Spielplan Schosch</h2>
       <div className="Button-Row">
         <IconButton onClick={settings}>
-          <CheckIcon sx={{ color: "white" }}></CheckIcon>
+          <SettingsIcon sx={{ color: "white" }}></SettingsIcon>
         </IconButton>
         <IconButton onClick={logout}>
-          <CheckIcon sx={{ color: "white" }}></CheckIcon>
+          <LogoutIcon sx={{ color: "white" }}></LogoutIcon>
         </IconButton>
       </div>
     </div>
