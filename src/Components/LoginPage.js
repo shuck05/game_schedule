@@ -37,6 +37,7 @@ function LoginPage(props) {
         <TextField
           className="loginContent"
           label="Password"
+          type="password"
           onChange={handlePasswordTextfieldChange}
         ></TextField>
         <Button

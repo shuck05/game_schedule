@@ -28,6 +28,24 @@ knex.schema
         });
     }
   })
+  .hasTable("events")
+  .then((exists) => {
+    if (!exists) {
+      return knex.schema
+        .createTable("events", (table) => {
+          table.increments("id").primary(),
+            table.string("name"),
+            table.string("trainers");
+        })
+        .then(() => {
+          // Log success message
+          console.log("Table 'Users' created");
+        })
+        .catch((error) => {
+          console.error(`There was an error creating table: ${error}`);
+        });
+    }
+  })
   .then(() => {
     // Log success message
     console.log("done");

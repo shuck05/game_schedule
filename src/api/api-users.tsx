@@ -19,7 +19,6 @@ const getUsers = async (): Promise<User[]> => {
 };
 
 const login = async (username: string, password: string): Promise<void> => {
-  console.log("loging in...");
   try {
     const response = await axios.post("http://localhost:1337/users/login", {
       username: username,
@@ -27,7 +26,6 @@ const login = async (username: string, password: string): Promise<void> => {
     });
     return response.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
