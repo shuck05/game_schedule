@@ -9,50 +9,44 @@ const knex = require("knex")({
   useNullAsDefault: true,
 });
 
-knex.schema
-  .hasTable("users")
-  .then((exists) => {
-    if (!exists) {
-      return knex.schema
-        .createTable("users", (table) => {
-          table.increments("id").primary(),
-            table.string("username"),
-            table.string("password");
-        })
-        .then(() => {
-          // Log success message
-          console.log("Table 'Users' created");
-        })
-        .catch((error) => {
-          console.error(`There was an error creating table: ${error}`);
-        });
-    }
-  })
-  .hasTable("events")
-  .then((exists) => {
-    if (!exists) {
-      return knex.schema
-        .createTable("events", (table) => {
-          table.increments("id").primary(),
-            table.string("name"),
-            table.string("trainers");
-        })
-        .then(() => {
-          // Log success message
-          console.log("Table 'Users' created");
-        })
-        .catch((error) => {
-          console.error(`There was an error creating table: ${error}`);
-        });
-    }
-  })
-  .then(() => {
-    // Log success message
-    console.log("done");
-  })
-  .catch((error) => {
-    console.error(`There was an error setting up the database: ${error}`);
-  });
+knex.schema.hasTable("users").then((exists) => {
+  if (!exists) {
+    return knex.schema
+      .createTable("users", (table) => {
+        table.increments("id").primary(),
+          table.string("username"),
+          table.string("password");
+      })
+      .then(() => {
+        // Log success message
+        console.log("Table 'users' created");
+      })
+      .catch((error) => {
+        console.error(`There was an error creating table 'users': ${error}`);
+      });
+  }
+});
+
+knex.schema.hasTable("events").then((exists) => {
+  if (!exists) {
+    return knex.schema
+      .createTable("events", (table) => {
+        table.increments("id").primary(),
+          table.string("eventName"),
+          table.string("teams"),
+          table.string("trainers"),
+          table.string("participants"),
+          table.string("admins");
+      })
+      .then(() => {
+        // Log success message
+        console.log("Table 'events' created");
+      })
+      .catch((error) => {
+        console.error(`There was an error creating table 'events': ${error}`);
+      });
+  }
+});
 
 /*
 knex
