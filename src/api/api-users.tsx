@@ -7,8 +7,6 @@ interface User {
 }
 
 const getUsers = async (): Promise<User[]> => {
-  console.log("trying to get Users");
-
   try {
     const response = await axios.get("http://localhost:1337/users/all");
     return response.data;

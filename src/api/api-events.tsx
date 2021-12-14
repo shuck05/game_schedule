@@ -14,8 +14,6 @@ interface Event {
 }
 
 const getEvents = async (): Promise<Event[]> => {
-  console.log("trying to get Events");
-
   try {
     const response = await axios.get("http://localhost:1337/events/all");
     return response.data;
@@ -32,7 +30,6 @@ const handleEventCreate = (
   participants: number[],
   admins: number[]
 ) => {
-  console.log(eventName, teams, trainers, participants, admins);
   let teamsString = JSON.stringify(teams);
   let trainerString = JSON.stringify(trainers);
   let partString = JSON.stringify(participants);

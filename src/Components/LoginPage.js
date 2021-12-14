@@ -2,11 +2,7 @@ import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { login, getUsers, handleUserCreate } from "../api/api-users";
 import "./styles/Login.css";
-import {
-  getEvents,
-  handleEventCreate,
-  getEventsByUserId,
-} from "./../api/api-events";
+import { getEvents, handleEventCreate } from "./../api/api-events";
 
 function LoginPage(props) {
   const [username, setUsername] = useState("");
@@ -33,7 +29,7 @@ function LoginPage(props) {
   }
 
   function button1() {
-    console.log("Button1");
+    // console.log("Button1");
     getEvents().then((events) => {
       console.log("Events:");
       console.log(events);
@@ -45,25 +41,41 @@ function LoginPage(props) {
   }
 
   function button2() {
-    console.log("Button2");
-    getEventsByUserId(1).then((events) => {
-      console.log("Events for User: 1");
-      console.log(events);
+    let emptyDB = true;
+    getUsers().then((users) => {
+      console.log(users.length);
+      if (users.length > 0) emptyDB = false;
+      if (emptyDB) {
+        console.log("DB ist empty");
+        handleUserCreate("admin", "admin");
+        handleUserCreate("Schmuddelchris", "ChicksLoveFlowers");
+        handleUserCreate("Wildschwein420", "Jaegermeister");
+        handleUserCreate("ValentinoRossiFan98", "Feldor");
+        handleUserCreate("iPhoneSE2020", "420Euros");
+        handleUserCreate("Rene", "ichGoenneNix");
+        handleEventCreate(
+          "Beerpong",
+          ["EisenLeber", "4 Linke Haende", "Trickshots", "BounceBalls"],
+          [1, 2, 3, 4, 45, 96, 78, 151, 79, 321],
+          [5, 6, 7, 32, 155, 687, 1564, 4894],
+          [1]
+        );
+        handleEventCreate(
+          "DBD",
+          ["Old Guy", "The first Victim", "Survivor", "Hero"],
+          [1, 2, 3, 4, 987, 4569, 56, 694, 123, 48],
+          [5, 6, 7, 99, 88, 77, 44, 556, 665, 113],
+          [2]
+        );
+        handleEventCreate(
+          "Colours",
+          ["Red", "Green", "Yellow", "Blue", "Purple", "Orange"],
+          [3, 5, 7, 9, 4, 11, 465, 8741],
+          [44, 556, 665, 113, 874, 6874, 687, 64684, 1384, 6876],
+          [1]
+        );
+      }
     });
-    /*
-    handleUserCreate("Schmuddelchris", "ChicksLoveFlowers");
-    handleUserCreate("Wildschwein420", "Jaegermeister");
-    handleUserCreate("ValentinoRossiFan98", "Feldor");
-    handleUserCreate("iPhoneSE2020", "420Euros");
-    handleUserCreate("Rene", "ichGoenneNix");
-    handleEventCreate(
-      "Event 1",
-      ["Team 4", "Team 7", "Team 3"],
-      [1, 9, 5],
-      [2, 6, 8, 22],
-      [4]
-    );
-    */
   }
 
   return (
@@ -88,8 +100,8 @@ function LoginPage(props) {
         >
           Login
         </Button>
-        <button onClick={button1}>Fetch</button>
-        <button onClick={button2}>Erstellen</button>
+        <button onClick={button1}>FetchDataFromDatabase</button>
+        <button onClick={button2}>DummyDataToDatabase</button>
       </div>
     </div>
   );
